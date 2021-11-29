@@ -6,49 +6,65 @@
     <h4>Item</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.BlobJson.Height)
+        @if (Model.BlobJson.Height != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.BlobJson.Height)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.BlobJson.Height)
+            </dd>
+        }
+        @if (Model.BlobJson.Width != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.BlobJson.Width)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.BlobJson.Width)
+            </dd>
+        }
+        @if (Model.BlobJson.Reading != null) 
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.BlobJson.Reading)
+            </dt>
+  
+            <dd>
+                @Html.DisplayFor(model => model.BlobJson.Reading)
+             </dd>
+        }
+        @if (Model.BlobJson.Unit != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.BlobJson.Unit)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.BlobJson.Unit)
+            </dd>
+        }
+
+        @if (Model.BlobJson.FrameData != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.BlobJson.FrameData)
         </dt>
+        }
 
         <dd>
-            @Html.DisplayFor(model => model.BlobJson.Height)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.BlobJson.Width)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.BlobJson.Width)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.BlobJson.Reading)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.BlobJson.Reading)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.BlobJson.Unit)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.BlobJson.Unit)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.BlobJson.FrameData)
-        </dt>
-        <dd>
-        @foreach (var name in Model.BlobJson.FrameData)
-            {
-        <text>
-            @Html.DisplayFor(model => name)  
-         </text>
+         @if (Model.BlobJson.FrameData != null)
+        {
+            foreach (var name in Model.BlobJson.FrameData)
+        {
+           <text> @Html.DisplayFor(model => name)  </text>
+         }
+        
         }
         <dd>
+        
     </dl>
 </div>
 <p>

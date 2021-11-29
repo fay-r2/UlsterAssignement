@@ -56,9 +56,33 @@
         </td>
     </tr>
 }
-
 </table>
 
+@using (Html.BeginForm())
+{
+    <div class="form-horizontal">
+        <div class="form-group form-group-sm">
+            <div class="col-md-8">
+               @Html.TextBox("start", null, new { @class = "form-control datepicker", @placeholder = "Start filter range" } ) 
+            </div>
+        </div>
+        <div class="form-group form-group-sm">
+            <div class="col-md-8">
+               @Html.TextBox("end", null, new { @class = "form-control datepicker", @placeholder = "End filter range" })
+            </div>
+        </div>
+        <div class="form-group form-group-sm">
+            <div class="col-md-8">
+               @Html.TextBox("sensorId", null, new { @class = "form-control datepicker", @placeholder = "filter by Sensor ID" })
+            </div>
+        </div>
+        <div class="form-group-sm">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="FilterDates" class="btn btn-default" /> <span> </span>
+            </div>
+        </div>
+    </div>
+}
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>

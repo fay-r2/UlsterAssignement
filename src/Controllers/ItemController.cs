@@ -1,6 +1,7 @@
 ﻿namespace todo.Controllers
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
     using Azure.Storage.Queues;
     using Microsoft.AspNetCore.Mvc;
@@ -22,9 +23,28 @@
 
         [ApiExplorerSettings(IgnoreApi = true)]
         [ActionName("Index")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string start, string end, string sensorId)
         {
-            return View(await _cosmosDbService.GetItemsAsync("SELECT * FROM c"));
+            ViewBag.start = start;
+            ViewBag.end = end;
+            if (!String.IsNullOrEmpty(sensorId))
+            {
+                ViewBag.sensorId = sensorId;
+              //  SELECT * FROM c WHERE c.SensorUUID = "string"
+                return View(await _cosmosDbService.GetItemsAsync($"SELECT * FROM c WHERE c.SensorUUID = \"{sensorId}\""));
+
+            }
+
+
+            var result = await _cosmosDbService.GetItemsAsync($"SELECT * FROM c WHERE c.TimeDate <= \"{start}\" AND c.TimeDate >= \"{end}\"");
+            if (result.Any())
+            {
+                return View(result);
+            }
+            else
+            {
+                return View(await _cosmosDbService.GetItemsAsync("SELECT * FROM c"));
+            }
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
@@ -40,6 +60,7 @@
         public async Task PostToQueue([FromBody] SensorDataItem sensorDataItem)
         {
             sensorDataItem.Id = Guid.NewGuid().ToString();
+
             var message = JsonConvert.SerializeObject(sensorDataItem,
             new JsonSerializerSettings()
             {
@@ -48,6 +69,7 @@
 
             await _queueClient.SendMessageAsync(message);
         }
+
 
         [HttpPost]
         [ActionName("Create")]
