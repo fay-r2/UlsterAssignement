@@ -6,10 +6,10 @@
 
     public interface ICosmosDbService
     {
-        Task<IEnumerable<Item>> GetItemsAsync(string query);
-        Task<Item> GetItemAsync(string id);
+        Task<IEnumerable<SensorDataItemID>> GetItemsAsync(string query);
+        Task<SensorDataItemID> GetItemAsync(string id);
         Task AddItemAsync(Item item);
-        Task UpdateItemAsync(string id, Item item);
+        Task UpdateItemAsync(string id, SensorDataItemID item);
         Task DeleteItemAsync(string id);
     }
 }

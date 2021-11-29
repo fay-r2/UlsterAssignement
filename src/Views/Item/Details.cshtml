@@ -1,38 +1,56 @@
-﻿@model todo.Models.Item
+﻿@model todo.Models.SensorDataItemID
 
-<h2>View To-Do Item Details</h2>
+<h2>View Sensor Details</h2>
 
 <div>
     <h4>Item</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.BlobJson.Height)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.BlobJson.Height)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.BlobJson.Width)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.BlobJson.Width)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Completed)
+            @Html.DisplayNameFor(model => model.BlobJson.Reading)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Completed)
+            @Html.DisplayFor(model => model.BlobJson.Reading)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.BlobJson.Unit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BlobJson.Unit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BlobJson.FrameData)
+        </dt>
+        <dd>
+        @foreach (var name in Model.BlobJson.FrameData)
+            {
+        <text>
+            @Html.DisplayFor(model => name)  
+         </text>
+        }
+        <dd>
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

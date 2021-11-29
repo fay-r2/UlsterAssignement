@@ -27,14 +27,16 @@
 
         public async Task DeleteItemAsync(string id)
         {
-            await this._container.DeleteItemAsync<Item>(id, new PartitionKey(id));
+            await this._container.DeleteItemAsync<SensorDataItemID>(id, new PartitionKey(id));
+
+
         }
 
-        public async Task<Item> GetItemAsync(string id)
+        public async Task<SensorDataItemID> GetItemAsync(string id)
         {
             try
             {
-                ItemResponse<Item> response = await this._container.ReadItemAsync<Item>(id, new PartitionKey(id));
+                ItemResponse<SensorDataItemID> response = await this._container.ReadItemAsync<SensorDataItemID>(id, new PartitionKey(id));
                 return response.Resource;
             }
             catch(CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -44,10 +46,10 @@
 
         }
 
-        public async Task<IEnumerable<Item>> GetItemsAsync(string queryString)
+        public async Task<IEnumerable<SensorDataItemID>> GetItemsAsync(string queryString)
         {
-            var query = this._container.GetItemQueryIterator<Item>(new QueryDefinition(queryString));
-            List<Item> results = new List<Item>();
+            var query = this._container.GetItemQueryIterator<SensorDataItemID>(new QueryDefinition(queryString));
+            List<SensorDataItemID> results = new List<SensorDataItemID>();
             while (query.HasMoreResults)
             {
                 var response = await query.ReadNextAsync();
@@ -58,9 +60,9 @@
             return results;
         }
 
-        public async Task UpdateItemAsync(string id, Item item)
+        public async Task UpdateItemAsync(string id, SensorDataItemID item)
         {
-            await this._container.UpsertItemAsync<Item>(item, new PartitionKey(id));
+            await this._container.UpsertItemAsync<SensorDataItemID>(item, new PartitionKey(id));
         }
     }
 }
