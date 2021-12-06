@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "cosmosdb1": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.DocumentDB/databaseAccounts/sensordatadb",
+      "type": "cosmosdb.azure",
+      "connectionId": "ConnectionStrings"
+    },
+    "storage1": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Storage/storageAccounts/ulsterassignmentstorage",
+      "type": "storage.azure",
+      "connectionId": "StroageConnectionStrings"
+    }
+  }
+}
