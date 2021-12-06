@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "cosmosdb1": {
+      "type": "cosmosdb",
+      "connectionId": "ConnectionStrings"
+    },
+    "storage1": {
+      "type": "storage",
+      "connectionId": "StroageConnectionStrings"
+    }
+  }
+}
