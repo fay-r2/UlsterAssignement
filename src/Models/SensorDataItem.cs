@@ -36,7 +36,7 @@ namespace todo.Models
         [JsonIgnore]
         public DateTime TimeDate { get; set; }
 
-        public long DeviceMfg { get; set; }
+        public long DeviceMfg { get; set; } = 2;
 
         [Range(1, 2)]
         public long SensorClass { get; set; }

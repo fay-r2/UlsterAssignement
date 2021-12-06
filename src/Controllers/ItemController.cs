@@ -1,7 +1,9 @@
 ﻿namespace todo.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
     using Azure.Storage.Queues;
     using Microsoft.AspNetCore.Mvc;
@@ -30,7 +32,6 @@
             if (!String.IsNullOrEmpty(sensorId))
             {
                 ViewBag.sensorId = sensorId;
-              //  SELECT * FROM c WHERE c.SensorUUID = "string"
                 return View(await _cosmosDbService.GetItemsAsync($"SELECT * FROM c WHERE c.SensorUUID = \"{sensorId}\""));
 
             }
@@ -61,6 +62,8 @@
         {
             sensorDataItem.Id = Guid.NewGuid().ToString();
 
+            Validate(sensorDataItem);
+
             var message = JsonConvert.SerializeObject(sensorDataItem,
             new JsonSerializerSettings()
             {
@@ -68,6 +71,50 @@
             });
 
             await _queueClient.SendMessageAsync(message);
+        }
+
+        private static void Validate(SensorDataItem sensorDataItem)
+        {
+            var errors = new List<string>();
+
+            if (sensorDataItem.SensorUUID == null || !sensorDataItem.SensorUUID.Any())
+            {
+                errors.Add("SensorUUID is empty");
+            }
+
+            if (sensorDataItem.SensorHardwareID == null || !sensorDataItem.SensorHardwareID.Any())
+            {
+                errors.Add("SensorHardwareID is empty");
+            }
+
+            if (sensorDataItem.SensorClass == (1 ^ 2))
+            {
+                errors.Add("SensorClass should equal 1 or 2");
+            }
+
+            if (sensorDataItem.DeviceMfg != 2)
+            {
+                errors.Add("DeviceMfg should equal 2");
+            }
+
+            if (sensorDataItem.BlobJson.Reading < -50 || sensorDataItem.BlobJson.Reading > 150)
+            {
+                errors.Add("Sensor reading out of range (-50°C to 150°C)");
+            }
+
+            if (errors.Any())
+            {
+                var errorBuilder = new StringBuilder();
+
+                errorBuilder.AppendLine("Invalid item, reason: ");
+
+                foreach (var error in errors)
+                {
+                    errorBuilder.AppendLine(error);
+                }
+
+                throw new Exception(errorBuilder.ToString());
+            }
         }
 
 
