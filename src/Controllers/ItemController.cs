@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
+    using System.Net.Http;
     using System.Text;
     using System.Threading.Tasks;
     using Azure.Storage.Queues;
@@ -10,8 +12,9 @@
     using Newtonsoft.Json;
     using todo.Models;
 
-   // [Route("api/[controller]")]
-   // [ApiController]
+
+    // [Route("api/[controller]")]
+    // [ApiController]
     public class ItemController : Controller
     {
         private readonly ICosmosDbService _cosmosDbService;
@@ -58,11 +61,24 @@
 
         [Route("PostQueue")]
         [HttpPost]
-        public async Task PostToQueue([FromBody] SensorDataItem sensorDataItem)
+        public async Task<System.Web.Mvc.HttpStatusCodeResult> PostToQueue([FromBody] SensorDataItem sensorDataItem)
         {
             sensorDataItem.Id = Guid.NewGuid().ToString();
+            sensorDataItem.SensorUUID = sensorDataItem.SensorHardwareID + "_" + sensorDataItem.SensorClass.ToString() + "_" + sensorDataItem.DeviceMfg.ToString();
 
-            Validate(sensorDataItem);
+            DateTime epochTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            long dateTimeOffSet = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() * 1000000;
+            double nanoseconds = dateTimeOffSet;
+            sensorDataItem.TimeStamp = nanoseconds;
+            DateTime result = epochTime.AddTicks((long)(nanoseconds / 100));
+
+            string errors = Validate(sensorDataItem);
+
+
+            if (errors != null)
+            {
+                return new System.Web.Mvc.HttpStatusCodeResult(HttpStatusCode.BadRequest, errors.ToString());
+            }
 
             var message = JsonConvert.SerializeObject(sensorDataItem,
             new JsonSerializerSettings()
@@ -71,16 +87,13 @@
             });
 
             await _queueClient.SendMessageAsync(message);
+            return new System.Web.Mvc.HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
-        private static void Validate(SensorDataItem sensorDataItem)
+        private static string Validate(SensorDataItem sensorDataItem)
         {
             var errors = new List<string>();
 
-            if (sensorDataItem.SensorUUID == null || !sensorDataItem.SensorUUID.Any())
-            {
-                errors.Add("SensorUUID is empty");
-            }
 
             if (sensorDataItem.SensorHardwareID == null || !sensorDataItem.SensorHardwareID.Any())
             {
@@ -113,8 +126,9 @@
                     errorBuilder.AppendLine(error);
                 }
 
-                throw new Exception(errorBuilder.ToString());
+                return errorBuilder.ToString();
             }
+            return null;
         }
 
 

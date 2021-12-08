@@ -26,11 +26,11 @@ namespace todo.Models
         [JsonIgnore]
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
-
+        [JsonIgnore]
         public string SensorUUID { get; set; }
 
         public string SensorHardwareID { get; set; }
-
+        [JsonIgnore]
         public double TimeStamp { get; set; }
         
         [JsonIgnore]

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace todo.Models
@@ -29,6 +30,8 @@ namespace todo.Models
         public string SensorHardwareID { get; set; }
 
         public double TimeStamp { get; set; }
+
+        public DateTime TimeDate { get; set; }
 
         public long DeviceMfg { get; set; }
 

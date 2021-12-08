@@ -10,16 +10,13 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Id)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.SensorUUID)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.SensorHardwareID)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TimeStamp)
+            @Html.DisplayNameFor(model => model.TimeDate)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.DeviceMfg)
@@ -32,9 +29,6 @@
 
 @foreach (var item in Model) {
     <tr>
-         <td>
-            @Html.DisplayFor(modelItem => item.Id)
-        </td>
         <td>
             @Html.DisplayFor(modelItem => item.SensorUUID)
         </td>
@@ -42,7 +36,7 @@
             @Html.DisplayFor(modelItem => item.SensorHardwareID)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.TimeStamp)
+            @Html.DisplayFor(modelItem => item.TimeDate)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.DeviceMfg)
